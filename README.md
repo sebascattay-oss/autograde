@@ -98,13 +98,17 @@ Si cumple todas las condiciones, verás:
 $ uv run python autograde.py google/chrome
 ```
 
-Si falta alguna condición, verás:
+Si falta alguna condición, verás todas revisadas (incluso las posteriores a la que falla):
 ```
 ✅ 1. The project is a git repository: Yes
 ✅ 2. That the 'main' branch exists: Yes
 ❌ 3. That the 'feature' branch exists in remote: No
-Some conditions not met.
+✅ 4. That the 'file1.txt' file exists in main: Yes
+
+❌ Some conditions not met.
 ```
+
+**Nota**: La herramienta revisa **todas las 4 condiciones** sin detenerse, así que obtendrás un reporte completo incluso si una falla.
 
 ## Pruebas
 
