@@ -9,35 +9,41 @@ def check_repo(repo_name):
         print(f"❌ Error accessing repository: {e}")
         return False
 
+    results = []
+
     # 1. The project is a git repository
     # All GitHub repositories are git repositories
     print("✅ 1. The project is a git repository: Yes")
+    results.append(True)
 
     # 2. That the "main" branch exists
     try:
         repo.get_branch("main")
         print("✅ 2. That the 'main' branch exists: Yes")
+        results.append(True)
     except:
         print("❌ 2. That the 'main' branch exists: No")
-        return False
+        results.append(False)
 
     # 3. That the "feature" branch exists in remote
     try:
         repo.get_branch("feature")
         print("✅ 3. That the 'feature' branch exists in remote: Yes")
+        results.append(True)
     except:
         print("❌ 3. That the 'feature' branch exists in remote: No")
-        return False
+        results.append(False)
 
     # 4. That the "file1.txt" file exists in main
     try:
         repo.get_contents("file1.txt", ref="main")
         print("✅ 4. That the 'file1.txt' file exists in main: Yes")
+        results.append(True)
     except:
         print("❌ 4. That the 'file1.txt' file exists in main: No")
-        return False
+        results.append(False)
 
-    return True
+    return all(results)
 
 def main():
     parser = argparse.ArgumentParser(
