@@ -1,8 +1,20 @@
 import unittest
 from unittest.mock import Mock, patch
-from autograde import check_repo
+from autograde import check_repo, parse_github_url
 
 class TestAutograde(unittest.TestCase):
+
+    def test_parse_github_url_valid(self):
+        self.assertEqual(parse_github_url("https://github.com/owner/repo"), "owner/repo")
+        self.assertEqual(parse_github_url("https://github.com/owner/repo/"), "owner/repo")
+
+    def test_parse_github_url_invalid(self):
+        with self.assertRaises(ValueError):
+            parse_github_url("owner/repo")
+        with self.assertRaises(ValueError):
+            parse_github_url("http://github.com/owner/repo")
+        with self.assertRaises(ValueError):
+            parse_github_url("https://github.com/owner/repo/extra")
 
     @patch('autograde.Github')
     def test_check_repo_success(self, mock_github_class):

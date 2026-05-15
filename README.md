@@ -33,10 +33,10 @@ uv run python autograde.py
 🔍 AUTOGRADE - GitHub Repository Validator
 ============================================================
 
-📍 Enter the GitHub repository (format: owner/repo): microsoft/vscode
+📍 Enter the GitHub repository URL (format: https://github.com/owner/repo): https://github.com/microsoft/vscode
 
 ============================================================
-📊 Checking repository: microsoft/vscode
+📊 Checking repository: https://github.com/microsoft/vscode
 ============================================================
 
 ✅ 1. The project is a git repository: Yes
@@ -51,15 +51,15 @@ uv run python autograde.py
 
 ### Modo 2: Con argumento (Línea de comandos)
 
-Proporciona el repositorio como parámetro:
+Proporciona la URL completa del repositorio como parámetro:
 
 ```bash
-uv run python autograde.py propietario/repositorio
+uv run python autograde.py https://github.com/propietario/repositorio
 ```
 
 **Ejemplo:**
 ```bash
-uv run python autograde.py microsoft/vscode
+uv run python autograde.py https://github.com/microsoft/vscode
 ```
 
 ### Obtener ayuda
@@ -84,7 +84,7 @@ Todas las condiciones deben cumplirse para que el repositorio sea válido.
 ### Ejemplo 1: Repositorio válido
 
 ```bash
-$ uv run python autograde.py microsoft/vscode
+$ uv run python autograde.py https://github.com/microsoft/vscode
 ```
 
 Si cumple todas las condiciones, verás:
@@ -95,7 +95,7 @@ Si cumple todas las condiciones, verás:
 ### Ejemplo 2: Repositorio inválido
 
 ```bash
-$ uv run python autograde.py google/chrome
+$ uv run python autograde.py https://github.com/google/chrome
 ```
 
 Si falta alguna condición, verás todas revisadas (incluso las posteriores a la que falla):

@@ -1,5 +1,15 @@
 import argparse
+import re
 from github import Github
+
+def parse_github_url(repo_url):
+    repo_url = repo_url.strip()
+    match = re.match(r'^https://github\.com/([^/\s]+)/([^/\s]+)/?$', repo_url)
+    if not match:
+        raise ValueError("Invalid repository URL format. Expected: https://github.com/owner/repo")
+    owner, repo = match.groups()
+    return f"{owner}/{repo}"
+
 
 def check_repo(repo_name):
     g = Github()  # No token needed for public repos
@@ -48,10 +58,14 @@ def check_repo(repo_name):
 def main():
     parser = argparse.ArgumentParser(
         description="Inspect a GitHub repository and report if it meets specified conditions.",
-        epilog="Examples:\n  autograde.py owner/repo\n  autograde.py (interactive mode)",
+        epilog="Examples:\n  autograde.py https://github.com/owner/repo\n  autograde.py (interactive mode)",
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    parser.add_argument("repo", nargs="?", help="GitHub repository in format 'owner/repo' (optional, will ask if not provided)")
+    parser.add_argument(
+        "repo",
+        nargs="?",
+        help="GitHub repository URL in format 'https://github.com/owner/repo' (optional, will ask if not provided)"
+    )
     args = parser.parse_args()
 
     # If no repository provided, ask interactively
@@ -60,19 +74,25 @@ def main():
         print("🔍 AUTOGRADE - GitHub Repository Validator")
         print("="*60 + "\n")
         
-        repo_input = input("📍 Enter the GitHub repository (format: owner/repo): ").strip()
+        repo_input = input("📍 Enter the GitHub repository URL (format: https://github.com/owner/repo): ").strip()
         
         if not repo_input:
             print("❌ No repository provided. Exiting.")
             return
         
         args.repo = repo_input
-    
+
+    try:
+        repo_name = parse_github_url(args.repo)
+    except ValueError as e:
+        print(f"❌ {e}")
+        return
+
     print("\n" + "="*60)
     print(f"📊 Checking repository: {args.repo}")
     print("="*60 + "\n")
     
-    success = check_repo(args.repo)
+    success = check_repo(repo_name)
     
     print("\n" + "="*60)
     if success:
